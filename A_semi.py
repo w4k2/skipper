@@ -34,7 +34,7 @@ print(mean_res.shape)
 
 for training_int_id, training_int in enumerate(training_intervals):
     
-    fig, ax = plt.subplots(7,4, figsize=(20,20), sharey=True, dpi=300)
+    fig, ax = plt.subplots(7,4, figsize=(20,20), sharey=True)
     plt.suptitle('Training every %i chunks' % (training_int))
     
     for data_id, data_name in enumerate(datasets):
@@ -67,7 +67,7 @@ for training_int_id, training_int in enumerate(training_intervals):
     plt.savefig('fig/semi_t%i.png' % (training_int))
     plt.savefig('foo.png')
             
-    exit()
+    # exit()
                  
                         
                         

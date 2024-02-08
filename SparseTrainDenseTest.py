@@ -54,27 +54,32 @@ class SparseTrainDenseTest:
         self.stream_ = stream
 
         # Prepare scores table
-        self.scores = np.zeros(
-            (len(self.clfs_), ((self.stream_.n_chunks - 1)), len(self.metrics))
+        self.scores = np.full(
+            (len(self.clfs_), ((self.stream_.n_chunks - 1)), len(self.metrics)),
+            np.nan
         )
 
         if self.verbose:
             pbar = tqdm(total=stream.n_chunks)
-        while chunk := stream.get_chunk():
-            X, y = chunk
+        
+        try:
+            while chunk := stream.get_chunk():
+                X, y = chunk
 
-            if self.verbose:
-                pbar.update(1)
+                if self.verbose:
+                    pbar.update(1)
 
-            # Test
-            if stream.previous_chunk is not None:
-                for clfid, clf in enumerate(self.clfs_):
-                    y_pred = clf.predict(X)
+                # Test
+                if stream.previous_chunk is not None:
+                    for clfid, clf in enumerate(self.clfs_):
+                        y_pred = clf.predict(X)
 
-                    self.scores[clfid, stream.chunk_id - 1] = [
-                        metric(y, y_pred) for metric in self.metrics
-                    ]
+                        self.scores[clfid, stream.chunk_id - 1] = [
+                            metric(y, y_pred) for metric in self.metrics
+                        ]
 
-            # Train
-            if stream.chunk_id % self.n_repeats == 0:
-                [clf.partial_fit(X, y, self.stream_.classes_.astype(int)) for clf in self.clfs_]
+                # Train
+                if stream.chunk_id % self.n_repeats == 0:
+                    [clf.partial_fit(X, y, self.stream_.classes_.astype(int)) for clf in self.clfs_]
+        except:
+            return
