@@ -1,3 +1,4 @@
+from sklearn import clone
 from strlearn.metrics import balanced_accuracy_score
 from sklearn.naive_bayes import GaussianNB
 from SparseTrainDenseTest import SparseTrainDenseTest
@@ -7,6 +8,18 @@ from tqdm import tqdm
 from sklearn.neural_network import MLPClassifier
 from strlearn.ensembles import *
 
+class MLPwrap:
+    def __init__(self, clf, n_epochs=100):
+        self.clf = clone(clf)
+        self.n_epochs = n_epochs
+        
+    def partial_fit(self, X, y, classes):
+        [self.clf.partial_fit(X, y, classes) for i in range(self.n_epochs)]
+        return self
+    
+    def predict(self, X):
+        return self.clf.predict(X)
+    
 # Config
 np.random.seed(1772)
 
@@ -31,6 +44,9 @@ n_methods = 9
 results = np.full((len(training_intervals), len(random_states), len(chunk_sizes), len(n_features), len(y_noises), len(n_drifts), n_methods, n_chunks-1), np.nan)
 pbar = tqdm(total=len(training_intervals)*len(random_states)*len(chunk_sizes)*len(n_features)*len(y_noises)*len(n_drifts))
 
+_res = np.load('res_syn.npy')
+results[:,:,:,:,:,:,:-1] = _res[:,:,:,:,:,:,:-1]
+
 for _training_int_id, _training_int in enumerate(training_intervals):
     
     print('Training intervals: %i' % _training_int)
@@ -54,26 +70,28 @@ for _training_int_id, _training_int in enumerate(training_intervals):
                             )
                             
                             methods = [
-                               SEA(base_estimator=GaussianNB()),
-                               AWE(base_estimator=GaussianNB()),
-                               AUE(base_estimator=GaussianNB()),
-                               WAE(base_estimator=GaussianNB()),
-                               DWM(base_estimator=GaussianNB()),
-                               KUE(base_estimator=GaussianNB()),
-                               ROSE(base_estimator=GaussianNB()),
-                               GaussianNB(),
-                               MLPClassifier()
+                            #    SEA(base_estimator=GaussianNB()),
+                            #    AWE(base_estimator=GaussianNB()),
+                            #    AUE(base_estimator=GaussianNB()),
+                            #    WAE(base_estimator=GaussianNB()),
+                            #    DWM(base_estimator=GaussianNB()),
+                            #    KUE(base_estimator=GaussianNB()),
+                            #    ROSE(base_estimator=GaussianNB()),
+                            #    GaussianNB(),
+                               MLPwrap(clf=MLPClassifier(random_state=1223))
                             ]
                             
                             evaluator = SparseTrainDenseTest(n_repeats = _training_int, metrics=balanced_accuracy_score)
                             evaluator.process(stream, methods)
                             
-                            results[_training_int_id, rs_id, _chunk_size_id, _n_f_id, _y_noise_id, _n_drifts_id] = evaluator.scores[:,:,0]
+                            print(evaluator.scores[0,:,0].shape)
+                            results[_training_int_id, rs_id, _chunk_size_id, _n_f_id, _y_noise_id, _n_drifts_id, -1] = evaluator.scores[0,:,0]
+                            
 
                             pbar.update(1)
                             
                             # print(results[_training_int_id, rs_id, _chunk_size_id, _n_f_id, _y_noise_id, _n_drifts_id,0])
-                            np.save('res_syn.npy', results)
+                            np.save('res_syn_fix.npy', results)
                             
                             
                         

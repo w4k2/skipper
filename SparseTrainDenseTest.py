@@ -62,6 +62,7 @@ class SparseTrainDenseTest:
             pbar = tqdm(total=stream.n_chunks)
         while chunk := stream.get_chunk():
             X, y = chunk
+
             if self.verbose:
                 pbar.update(1)
 
@@ -76,4 +77,4 @@ class SparseTrainDenseTest:
 
             # Train
             if stream.chunk_id % self.n_repeats == 0:
-                [clf.partial_fit(X, y, self.stream_.classes_) for clf in self.clfs_]
+                [clf.partial_fit(X, y, self.stream_.classes_.astype(int)) for clf in self.clfs_]

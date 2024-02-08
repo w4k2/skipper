@@ -23,11 +23,11 @@ n_drifts = [5,10,15,30]
 method_names = [ 'SEA', 'AWE', 'AUE', 'WAE', 'DWM', 'KUE', 'ROSE', 'GNB', 'MLP']
 cols = plt.cm.jet(np.linspace(0,1,len(method_names)))
 
-res = np.load('res_syn.npy') # training_int , rs_id, chunk_size, n_f, y_noise, n_drifts, methods, chunks
+res = np.load('res_syn_fix.npy') # training_int , rs_id, chunk_size, n_f, y_noise, n_drifts, methods, chunks
 
 print(res.shape)
 
-mean_res = np.mean(res, axis=1) #training_int , chunk_size, n_f, y_noise, n_drifts, methods, chunks                      
+mean_res = np.nanmean(res, axis=1) #training_int , chunk_size, n_f, y_noise, n_drifts, methods, chunks                      
 print(mean_res.shape)
 
 for chunk_size_id, chunk_size in enumerate(chunk_sizes):
