@@ -34,7 +34,7 @@ for chunk_size_id, chunk_size in enumerate(chunk_sizes):
     for y_noise_id, y_noise in enumerate(y_noises):
         for training_int_id, training_int in enumerate(training_intervals):
             
-            fig, ax = plt.subplots(4,4, figsize=(20,10), sharey=True)
+            fig, ax = plt.subplots(4,4, figsize=(20,10), sharey=True, dpi=300)
             plt.suptitle('Chunk size: %i | label noise: %.2f | training every %i chunks' % (chunk_size, y_noise, training_int))
             
             for n_f_id, n_f in enumerate(n_features):
@@ -49,8 +49,10 @@ for chunk_size_id, chunk_size in enumerate(chunk_sizes):
                         aa.plot(gaussian_filter1d(temp, 3), color=cols[method_id], label=method, linewidth=0.75)
                     
                     l = get_real_drift(1000, n_d).astype(int)
-                    aa.set_xticks(l-1, l, rotation=90)
-                    aa.grid()
+                    skip = [1, 2, 3, 4][n_d_id]
+                    ll = [ i if i_id%skip==0 else '' for i_id, i in enumerate(l)]
+                    aa.set_xticks((l-1), ll)
+                    aa.grid(ls=':')
                     aa.spines['top'].set_visible(False)
                     aa.spines['right'].set_visible(False)
                     
@@ -58,13 +60,17 @@ for chunk_size_id, chunk_size in enumerate(chunk_sizes):
                         aa.set_xlabel('%i drifts' % n_d)
                     if n_d_id==0:
                         aa.set_ylabel('%i features' % n_f)
+                        
             
-            ax[0,0].legend(frameon=False)
+            plt.legend(bbox_to_anchor=(-1, -0.32), loc='upper center', ncol=9, frameon=False, fontsize=12)
+            plt.subplots_adjust(bottom=0.15, top=0.95, right=0.98, left=0.05, hspace=0.2, wspace=0.05)
 
             plt.tight_layout()
             plt.savefig('fig/cs%i_n%i_t%i.png' % (chunk_size, y_noise_id, training_int))
             plt.savefig('foo.png')
             # time.sleep(1)
+            
+            # exit()
                  
                         
                         
