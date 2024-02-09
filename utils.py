@@ -58,8 +58,11 @@ def generate_agrawal(random_state = 1,          # Seed for random generation of 
     Xnum = XX.values[:,[0,1,2,6,7,8]]
     Xcat = XX.apply(lambda x: pd.factorize(x)[0]).values[:,[3,4,5]]
     X = np.concatenate((Xnum, Xcat), axis=1).astype(np.float)
+    
+    print(X)
     y = (np.array([row.tolist()[-1] for row in rawdata]) == b'groupA').astype(int)
 
+    print(y)
     return X, y
 
 

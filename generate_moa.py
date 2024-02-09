@@ -39,7 +39,7 @@ print(hyperplane_cube.shape)
 
 print('Generate Agrawal')
 try:
-    agrawal_cube = np.load('moa_streams/raw/agrawal.npy', allow_pickle=True)
+    agrawal_cube = np.load('moa_streams/raw/agrawal.npy')
 except:
     agrawal_cube = []
 
