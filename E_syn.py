@@ -44,8 +44,8 @@ n_methods = 9
 results = np.full((len(training_intervals), len(random_states), len(chunk_sizes), len(n_features), len(y_noises), len(n_drifts), n_methods, n_chunks-1), np.nan)
 pbar = tqdm(total=len(training_intervals)*len(random_states)*len(chunk_sizes)*len(n_features)*len(y_noises)*len(n_drifts))
 
-_res = np.load('res_syn.npy')
-results[:,:,:,:,:,:,:-1] = _res[:,:,:,:,:,:,:-1]
+# _res = np.load('res_syn.npy')
+# results[:,:,:,:,:,:,:-1] = _res[:,:,:,:,:,:,:-1]
 
 for _training_int_id, _training_int in enumerate(training_intervals):
     
@@ -70,14 +70,14 @@ for _training_int_id, _training_int in enumerate(training_intervals):
                             )
                             
                             methods = [
-                            #    SEA(base_estimator=GaussianNB()),
-                            #    AWE(base_estimator=GaussianNB()),
-                            #    AUE(base_estimator=GaussianNB()),
-                            #    WAE(base_estimator=GaussianNB()),
-                            #    DWM(base_estimator=GaussianNB()),
-                            #    KUE(base_estimator=GaussianNB()),
-                            #    ROSE(base_estimator=GaussianNB()),
-                            #    GaussianNB(),
+                               SEA(base_estimator=GaussianNB()),
+                               AWE(base_estimator=GaussianNB()),
+                               AUE(base_estimator=GaussianNB()),
+                               WAE(base_estimator=GaussianNB()),
+                               DWM(base_estimator=GaussianNB()),
+                               KUE(base_estimator=GaussianNB()),
+                               ROSE(base_estimator=GaussianNB()),
+                               GaussianNB(),
                                MLPwrap(clf=MLPClassifier(random_state=1223))
                             ]
                             
