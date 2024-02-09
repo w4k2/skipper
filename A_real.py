@@ -38,7 +38,7 @@ for training_int_id, training_int in enumerate(training_intervals):
         aa.spines['right'].set_visible(False)
         
         if data_id==0:
-            aa.set_title('treining every %i' % training_int)
+            aa.set_title('training every %i' % training_int)
         if training_int_id==0:
             aa.set_ylabel('%s' % data_name.split('.')[0])
             
