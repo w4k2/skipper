@@ -57,7 +57,57 @@ def generate_agrawal(random_state = 1,          # Seed for random generation of 
     XX = pd.DataFrame(rawdata)
     Xnum = XX.values[:,[0,1,2,6,7,8]]
     Xcat = XX.apply(lambda x: pd.factorize(x)[0]).values[:,[3,4,5]]
-    X = np.concatenate((Xnum, Xcat), axis=1)
+    X = np.concatenate((Xnum, Xcat), axis=1).astype(np.float)
     y = (np.array([row.tolist()[-1] for row in rawdata]) == b'groupA').astype(int)
+
+    return X, y
+
+
+def generate_sea(random_state = 1,          # Seed for random generation of instances.
+                     function = 1,              # Classification function used, as defined in the original paper. [1-10]
+                     n_instances_concept = 0,
+                     noise = 10,
+                     n_samples = 10000
+    ):
+    path = ".tmp.arff"
+    params = (
+        function,
+        random_state, 
+        n_instances_concept,
+        noise,
+        path,
+        n_samples
+    )
+    cmd = "WriteStreamToARFFFile -s (generators.SEAGenerator -f %i -i %i -n %i -p %i -b) -f %s -m %i" % params
+
+    system(MOA_TEMPLATE % cmd)
+    
+    rawdata, meta = loadarff(path)
+
+    X = np.array([row.tolist()[:-1] for row in rawdata])
+    y = (np.array([row.tolist()[-1] for row in rawdata]) == b'groupA').astype(int)
+
+    return X, y
+
+
+def generate_led(random_state = 1,          # Seed for random generation of instances.
+                     noise = 10,
+                     n_samples = 10000
+    ):
+    path = ".tmp.arff"
+    params = (
+        random_state, 
+        noise,
+        path,
+        n_samples
+    )
+    cmd = "WriteStreamToARFFFile -s (generators.LEDGenerator -i %i -n %i) -f %s -m %i" % params
+
+    system(MOA_TEMPLATE % cmd)
+    
+    rawdata, meta = loadarff(path)
+    
+    X = np.array([row.tolist()[:-1] for row in rawdata]).astype(float)
+    y = np.array([row.tolist()[-1] for row in rawdata]).astype(int)
 
     return X, y
