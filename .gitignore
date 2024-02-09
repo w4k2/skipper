@@ -4,3 +4,4 @@ res_syn_fix.npy
 real_streams/.DS_Store
 res_semi.npy
 .DS_Store
+moa_streams/raw/*.npy
