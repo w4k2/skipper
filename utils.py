@@ -2,6 +2,7 @@
 from os import system
 from scipy.io.arff import loadarff
 import numpy as np
+import pandas as pd
 
 MOA_TEMPLATE = 'java -cp lib/moa.jar -javaagent:lib/sizeofag-1.0.4.jar moa.DoTask "%s"'
 
@@ -31,5 +32,32 @@ def generate_hyperplane(random_state = 1,               # Seed for random genera
 
     X = np.array([row.tolist()[:-1] for row in rawdata])
     y = (np.array([row.tolist()[-1] for row in rawdata]) == b'class1').astype(int)
+
+    return X, y
+
+def generate_agrawal(random_state = 1,          # Seed for random generation of instances.
+                     function = 1,              # Classification function used, as defined in the original paper. [1-10]
+                     perturb_fraction = .05,    # The amount of peturbation (noise) introduced to numeric values.
+                     n_samples = 10000
+    ):
+    path = ".tmp.arff"
+    params = (
+        function,
+        random_state, 
+        perturb_fraction,
+        path,
+        n_samples
+    )
+    cmd = "WriteStreamToARFFFile -s (generators.AgrawalGenerator -f %i -i %i -p %f -b) -f %s -m %i" % params
+
+    system(MOA_TEMPLATE % cmd)
+    
+    rawdata, meta = loadarff(path)
+
+    XX = pd.DataFrame(rawdata)
+    Xnum = XX.values[:,[0,1,2,6,7,8]]
+    Xcat = XX.apply(lambda x: pd.factorize(x)[0]).values[:,[3,4,5]]
+    X = np.concatenate((Xnum, Xcat), axis=1)
+    y = (np.array([row.tolist()[-1] for row in rawdata]) == b'groupA').astype(int)
 
     return X, y
