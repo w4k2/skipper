@@ -9,7 +9,7 @@ from sklearn.neural_network import MLPClassifier
 from strlearn.ensembles import *
 
 class MLPwrap:
-    def __init__(self, clf, n_epochs=100):
+    def __init__(self, clf, n_epochs=25):
         self.clf = clone(clf)
         self.n_epochs = n_epochs
         
