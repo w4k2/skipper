@@ -37,13 +37,13 @@ for training_int_id, training_int in enumerate(training_intervals):
         aa.spines['top'].set_visible(False)
         aa.spines['right'].set_visible(False)
         
-        if data_id==len(datasets)-1:
-            aa.set_xlabel('treining every %i' % training_int)
+        if data_id==0:
+            aa.set_title('treining every %i' % training_int)
         if training_int_id==0:
             aa.set_ylabel('%s' % data_name.split('.')[0])
             
 
-plt.legend(bbox_to_anchor=(-1, -0.32), loc='upper center', ncol=9, frameon=False, fontsize=12)
+plt.legend(bbox_to_anchor=(-0.75, -0.32), loc='upper center', ncol=9, frameon=False, fontsize=12)
 plt.subplots_adjust(bottom=0.07, top=0.95, right=0.98, left=0.05, hspace=0.2, wspace=0.05)
 
 plt.tight_layout()
