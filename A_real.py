@@ -17,6 +17,31 @@ datasets = ['INSECTS-a', 'INSECTS-g', 'Covtype', 'INSECTS-i-5', 'Poker',
             'INSECTS-i', 'INSECTS-a-5', 'INSECTS-g-5']
 
 method_names = [ 'SEA', 'AWE', 'AUE', 'WAE', 'DWM', 'KUE', 'ROSE', 'GNB', 'MLP']
+
+colors = [
+    'black', 'black',
+    'green', 'green',
+    'red', 'red', 'red',
+    'blue', 'blue'
+]
+ls = [
+    '-', ':',
+    '-', ':',
+    '-', ':', '-.',
+    '-', ':',
+]
+lw = [
+    1,1,
+    1,1,
+    1,1,1,
+    1,1
+]
+
+order = [7, 8,      # GNB, MLP 
+         0, 4,      # SEA, DWM 
+         1, 2, 3,   # AWE, AUE, WAE 
+         5, 6]      # KUE, ROSE
+
 cols = plt.cm.jet(np.linspace(0,1,len(method_names)))
 
 res = np.load('res_real.npy')
@@ -29,9 +54,19 @@ for training_int_id, training_int in enumerate(training_intervals):
             
         aa = ax[data_id, training_int_id]
                     
-        for method_id, method in enumerate(method_names):
+        for o_id, method_id in enumerate(order):
+            method = method_names[method_id]
             temp = res[data_id, training_int_id, method_id]
-            aa.plot(gaussian_filter1d(temp, 3), color=cols[method_id], label=method, linewidth=0.75)
+            aa.plot(gaussian_filter1d(temp, 3), 
+                color=colors[o_id],# cols[method_id], 
+                label=method,
+                ls=ls[o_id],
+                linewidth=lw[o_id])
+
+
+        # for method_id, method in enumerate(method_names):
+        #     temp = res[data_id, training_int_id, method_id]
+        #     aa.plot(gaussian_filter1d(temp, 3), color=cols[method_id], label=method, linewidth=0.75)
         
         aa.grid(ls=':')
         aa.spines['top'].set_visible(False)
@@ -48,6 +83,7 @@ plt.subplots_adjust(bottom=0.07, top=0.95, right=0.98, left=0.05, hspace=0.2, ws
 
 plt.tight_layout()
 plt.savefig('fig/real.png')
+plt.savefig('fig/real.eps')
 plt.savefig('foo.png')
         
 exit()

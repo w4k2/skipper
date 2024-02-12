@@ -23,21 +23,46 @@ except:
 
 datasets = [a.replace('_5_', '_05_') for a in datasets]
 
-order = np.argsort(datasets)
+_order = np.argsort(datasets)
 
-print(order)
-print(datasets)
-datasets = np.array(datasets)[order]
+# print(order)
+# print(datasets)
+datasets = np.array(datasets)[_order]
 
 
 method_names = [ 'SEA', 'AWE', 'AUE', 'WAE', 'DWM', 'KUE', 'ROSE', 'GNB', 'MLP']
+
+colors = [
+    'black', 'black',
+    'green', 'green',
+    'red', 'red', 'red',
+    'blue', 'blue'
+]
+ls = [
+    '-', ':',
+    '-', ':',
+    '-', ':', '-.',
+    '-', ':',
+]
+lw = [
+    1,1,
+    1,1,
+    1,1,1,
+    1,1
+]
+
+order = [7, 8,      # GNB, MLP 
+         0, 4,      # SEA, DWM 
+         1, 2, 3,   # AWE, AUE, WAE 
+         5, 6]      # KUE, ROSE
+
 cols = plt.cm.jet(np.linspace(0,1,len(method_names)))
 
 res = np.load('res_moa.npy')
 print(res.shape)  # streams, training_int, methods, chunks
 
 
-res = res[order]
+res = res[_order]
     
 for training_int_id, training_int in enumerate(training_intervals):
     
@@ -49,9 +74,19 @@ for training_int_id, training_int in enumerate(training_intervals):
             
         aa = ax[data_id]
                     
-        for method_id, method in enumerate(method_names):
+        # for method_id, method in enumerate(method_names):
+        #     temp = res[data_id, training_int_id, method_id]
+        #     aa.plot(gaussian_filter1d(temp, 3), color=cols[method_id], label=method, linewidth=0.75)
+        
+        
+        for o_id, method_id in enumerate(order):
+            method = method_names[method_id]
             temp = res[data_id, training_int_id, method_id]
-            aa.plot(gaussian_filter1d(temp, 3), color=cols[method_id], label=method, linewidth=0.75)
+            aa.plot(gaussian_filter1d(temp, 3), 
+                color=colors[o_id],# cols[method_id], 
+                label=method,
+                ls=ls[o_id],
+                linewidth=lw[o_id])
         
         aa.grid(ls=':')
         aa.spines['top'].set_visible(False)
@@ -70,6 +105,7 @@ for training_int_id, training_int in enumerate(training_intervals):
 
     # plt.tight_layout()
     plt.savefig('fig/moa_t%i.png' % training_int)
+    plt.savefig('fig/moa_t%i.eps' % training_int)
     plt.savefig('foo.png')
             
     # exit()
