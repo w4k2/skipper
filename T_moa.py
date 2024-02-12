@@ -42,7 +42,7 @@ for training_int_id, training_int in enumerate(training_intervals):
         mean_res = np.nanmean(temp_res, axis=-1)
                            
         rows.append([
-            '%s' % (data_name),
+            '%s' % (data_name.split('.')[0]),
             '%.3f' % (mean_res[0]),
             '%.3f' % (mean_res[1]),
             '%.3f' % (mean_res[2]),
