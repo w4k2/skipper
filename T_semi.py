@@ -32,7 +32,7 @@ for training_int_id, training_int in enumerate(training_intervals):
                 
             temp_res = res[data_id, training_int_id, :, n_d_id]
             temp_res_stream = np.mean(temp_res, axis=-1)
-            
+
             mean_res = np.round(np.mean(temp_res_stream, axis=0),3)
             std_res = np.round(np.std(temp_res_stream, axis=0),3)
                     
