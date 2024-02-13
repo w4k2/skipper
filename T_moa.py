@@ -22,9 +22,6 @@ print(order)
 print(datasets)
 datasets = np.array(datasets)[order]
 
-
-method_names = [ 'SEA', 'AWE', 'AUE', 'WAE', 'DWM', 'KUE', 'ROSE', 'GNB', 'MLP']
-
 res = np.load('res_moa.npy')
 res = res[order]
 
