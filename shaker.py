@@ -7,9 +7,7 @@ class DriftEvaluator:
         self.__drift_indices = drift_indices
         self.n_chunks = n_chunks
 
-        for pair in scores[0]:
-            self.__scores.append(np.mean(pair))
-
+        self.__scores = scores
         self.__median_scores = self.calculate_median_scores()
         self.__recovery_lengths = self.calculate_recovery_lengths()
         self.__performance_loss = self.calculate_performance_loss()

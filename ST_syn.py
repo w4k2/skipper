@@ -46,18 +46,19 @@ for training_int_id, training_int in enumerate(training_intervals):
                     
                     print(temp_res.shape)
                     
-                    rec_len = np.zeros((10,9))
-                    perf_loss = np.zeros((10,9))
+                    rec_len = np.zeros((10, 9, n_d))
+                    perf_loss = np.zeros((10,9, n_d))
                     for r in range(10):
-                        de = DriftEvaluator(temp_res[r, 0], (get_real_drift(1000, n_d).astype(int))-1, 1000)
-                        rec_len[r] = de.calculate_recovery_lengths()
-                        perf_loss[r] = de.calculate_performance_loss()
+                        for m in range(9):
+                            de = DriftEvaluator(temp_res[r, m], (get_real_drift(1000, n_d).astype(int))-1, 1000)
+                            rec_len[r, m] = de.calculate_recovery_lengths()
+                            perf_loss[r, m] = de.calculate_performance_loss()
                     
-                    rec_len_mean = np.mean(rec_len, axis=0)
-                    rec_len_std = np.std(rec_len, axis=0)
+                    rec_len_mean = np.mean(rec_len, axis=(0,-1))
+                    rec_len_std = np.std(rec_len, axis=(0,-1))
                     
-                    perf_loss_mean = np.mean(perf_loss, axis=0)
-                    perf_loss_std = np.std(perf_loss, axis=0)                    
+                    perf_loss_mean = np.mean(perf_loss, axis=(0,-1))
+                    perf_loss_std = np.std(perf_loss, axis=(0,-1))                    
                     
                     rows_rec_len.append([
                         'CS%i_F%i_D%i_N%.2f' % (chunk_size, n_f, n_d, y_noise),
