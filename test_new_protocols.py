@@ -82,6 +82,7 @@ for f_id, f_name in enumerate(['CR', 'TS', 'TU', 'TUR']):
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
         ax.grid(ls=':')
+        ax.set_ylim(0.5, 1)
 
         ax.set_title(framework)
 
