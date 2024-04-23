@@ -30,8 +30,8 @@ stream = StreamGenerator(
 
 
 # # Continous rebuild
-# framework = ContinousRebuild()
-# framework.process(stream=stream, clf=GaussianNB())
+framework = ContinousRebuild()
+framework.process(stream=stream, clf=GaussianNB())
 
 
 # # Triggered rebuild -- supervised
@@ -44,9 +44,9 @@ stream = StreamGenerator(
 # framework.process(stream=stream, clf=GaussianNB(), det=CentroidDistanceDriftDetector())
 
 
-# # Triggered rebuild -- unsupervised with label request
-framework = TriggeredRebuildUnsupervisedRequest()
-framework.process(stream=stream, clf=GaussianNB(), det=MD3())
+# # # Triggered rebuild -- unsupervised with label request
+# framework = TriggeredRebuildUnsupervisedRequest()
+# framework.process(stream=stream, clf=GaussianNB(), det=MD3())
 
 
 fig, ax = plt.subplots(1,1,figsize=(12,3))
@@ -68,6 +68,8 @@ ax.legend(frameon=False, ncols=4)
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
 ax.grid(ls=':')
+
+ax.set_title(framework)
 
 plt.tight_layout()
 plt.savefig('foo.png')
