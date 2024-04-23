@@ -3,10 +3,11 @@ import numpy as np
 from sklearn.metrics import balanced_accuracy_score
 
 class TriggeredRebuildUnsupervisedRequest:
-    def __init__(self, score_metric=balanced_accuracy_score, delta=10):
+    def __init__(self, score_metric=balanced_accuracy_score, delta=10, partial=True):
         self.score_metric = score_metric
         self.delta = delta # Number of chunks for the labels to arrive since explicit request 
-        
+        self.partial = partial
+
     def process(self, stream, det, clf):
         
         self.scores = []
@@ -21,7 +22,10 @@ class TriggeredRebuildUnsupervisedRequest:
 
             if chunk_id == 0:
                 # Just train clf
-                clf.partial_fit(X, y, np.unique(y))
+                if self.partial == True:
+                    clf.partial_fit(X, y, np.unique(y))
+                else:
+                    clf.fit(X, y)
                 # Request data for 1st chunk to fit the detector
                 pending_label_request_chunk_ids.append(chunk_id)
                 continue
@@ -40,7 +44,10 @@ class TriggeredRebuildUnsupervisedRequest:
                     past_X = stream.X[start:end]
                     past_y = stream.y[start:end]
             
-                    clf.partial_fit(past_X, past_y, np.unique(past_y))
+                    if self.partial == True:
+                        clf.partial_fit(past_X, past_y, np.unique(past_y))
+                    else:
+                        clf.fit(past_X, past_y)   
                     
                     # Remove from pending list
                     pending_label_request_chunk_ids.remove(chunk_id-self.delta)
