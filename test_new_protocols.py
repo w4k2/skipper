@@ -37,11 +37,13 @@ dets = [None, DDM(), CentroidDistanceDriftDetector(), MD3()]
 # clf = MLPWrap(MLPClassifier(random_state=997, hidden_layer_sizes=(10)))
 clf = GaussianNB()
 
+d = 1
+p = False
 frameworks = [
-        ContinousRebuild(partial=False),
-        TriggeredRebuildSupervised(partial=False),
-        TriggeredRebuildUnsupervised(partial=False),
-        TriggeredRebuildUnsupervisedRequest(partial=False)
+        ContinousRebuild(partial=p, delta=d),
+        TriggeredRebuildSupervised(partial=p, delta=d),
+        TriggeredRebuildUnsupervised(partial=p, delta=d),
+        TriggeredRebuildUnsupervisedRequest(partial=p, delta=d)
 ]
 
 for f_id, f_name in enumerate(['CR', 'TS', 'TU', 'TUR']):
