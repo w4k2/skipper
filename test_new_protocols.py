@@ -4,6 +4,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
 from strlearn.streams import StreamGenerator
 from detectors.CDDD import CentroidDistanceDriftDetector
+from detectors.Oracle import Oracle
 from detectors.adwin import ADWIN
 from detectors.ddm import DDM
 from detectors.MD3 import MD3
@@ -33,12 +34,20 @@ class MLPwrap:
         return self.clf.predict(X)
     
 
-dets = [None, DDM(), CentroidDistanceDriftDetector(), MD3()]
+n_drifts = 7
+n_chunks = 500
+
+# dets = [None, DDM(), CentroidDistanceDriftDetector(), MD3()]
+dets = [None, 
+        Oracle(n_drifts=n_drifts, n_chunks=n_chunks), 
+        Oracle(n_drifts=n_drifts, n_chunks=n_chunks), 
+        Oracle(n_drifts=n_drifts, n_chunks=n_chunks)
+        ]
 # clf = MLPWrap(MLPClassifier(random_state=997, hidden_layer_sizes=(10)))
 clf = GaussianNB()
 
-d = 1
-p = False
+d = 20
+p = True
 frameworks = [
         ContinousRebuild(partial=p, delta=d),
         TriggeredRebuildSupervised(partial=p, delta=d),
@@ -49,10 +58,10 @@ frameworks = [
 for f_id, f_name in enumerate(['CR', 'TS', 'TU', 'TUR']):
         
         stream = StreamGenerator(
-                n_chunks=500,
+                n_chunks=n_chunks,
                 chunk_size=200,
                 random_state=233,
-                n_drifts=7,
+                n_drifts=n_drifts,
                 n_features=20,
                 n_redundant=0,
                 n_informative=20)
