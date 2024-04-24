@@ -52,7 +52,7 @@ class TriggeredRebuildSupervised:
                         clf.fit(past_X, past_y)                    
                     
                     self.detections.append(chunk_id)
-                    self.training_chunks.append(chunk_id)
+                    self.training_chunks.append(chunk_id-self.delta)
                     self.past_training_chunks.append(chunk_id-self.delta)
                     
                 # Remove from pending list
