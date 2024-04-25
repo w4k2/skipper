@@ -3,11 +3,12 @@ from sklearn import clone
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
 from strlearn.streams import StreamGenerator
-from detectors.CDDD import CentroidDistanceDriftDetector
+from detectors.OCDD import OneClassDriftDetector
 from detectors.Oracle import Oracle
 from detectors.adwin import ADWIN
 from detectors.ddm import DDM
 from detectors.MD3 import MD3
+from skmultiflow.trees import HoeffdingTree
 
 from ContinousRebuild import ContinousRebuild
 from TriggeredRebuildSupervised import TriggeredRebuildSupervised
@@ -37,14 +38,14 @@ class MLPwrap:
 n_drifts = 7
 n_chunks = 500
 
-# dets = [None, DDM(), CentroidDistanceDriftDetector(), MD3()]
-dets = [None, 
-        Oracle(n_drifts=n_drifts, n_chunks=n_chunks), 
-        Oracle(n_drifts=n_drifts, n_chunks=n_chunks), 
-        Oracle(n_drifts=n_drifts, n_chunks=n_chunks)
-        ]
+dets = [None, DDM(), OneClassDriftDetector(size = 250, dim = 20, percent = 0.995, nu=0.5), MD3()]
+# dets = [None, 
+#         Oracle(n_drifts=n_drifts, n_chunks=n_chunks), 
+#         Oracle(n_drifts=n_drifts, n_chunks=n_chunks), 
+#         Oracle(n_drifts=n_drifts, n_chunks=n_chunks)
+#         ]
 # clf = MLPWrap(MLPClassifier(random_state=997, hidden_layer_sizes=(10)))
-clf = GaussianNB()
+clf = HoeffdingTree()
 
 d = 20
 p = True
@@ -64,7 +65,7 @@ for f_id, f_name in enumerate(['CR', 'TS', 'TU', 'TUR']):
                 n_drifts=n_drifts,
                 n_features=20,
                 n_redundant=0,
-                n_informative=20)
+                n_informative=15)
         
         framework = frameworks[f_id]
         if f_id==0:
