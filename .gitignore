@@ -6,4 +6,3 @@ res_semi.npy
 .DS_Store
 moa_streams/raw/*.npy
 .tmp.arff
-fig_frameworks
