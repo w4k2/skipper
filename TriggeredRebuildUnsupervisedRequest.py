@@ -11,9 +11,8 @@ class TriggeredRebuildUnsupervisedRequest:
     def process(self, stream, det, clf):
         
         self.scores = []
-        self.detections = []
+        self.label_request_chunks = []
         self.training_chunks = []
-        self.past_training_chunks = []
         
         pending_label_request_chunk_ids = []
         
@@ -28,6 +27,7 @@ class TriggeredRebuildUnsupervisedRequest:
                     clf.fit(X, y)
                 # Request data for 1st chunk to fit the detector
                 pending_label_request_chunk_ids.append(chunk_id)
+                self.label_request_chunks.append(chunk_id)
                 continue
                 
             # Check if pending request exists
@@ -52,14 +52,13 @@ class TriggeredRebuildUnsupervisedRequest:
                     # Remove from pending list
                     pending_label_request_chunk_ids.remove(chunk_id-self.delta)
                     self.training_chunks.append(chunk_id)
-                    self.past_training_chunks.append(chunk_id-self.delta)
                     
                     # Detection here (supervised mode)
                     det.process(past_X, past_y)
                     if det._is_drift:
                         # Request labels for current chunk
                         pending_label_request_chunk_ids.append(chunk_id)
-                        self.detections.append(chunk_id)
+                        self.label_request_chunks.append(chunk_id)
                         
             else:
                 # Detection (unsupervised mode)
@@ -67,7 +66,7 @@ class TriggeredRebuildUnsupervisedRequest:
                     if det._is_drift:
                         # Request labels for current chunk
                         pending_label_request_chunk_ids.append(chunk_id)
-                        self.detections.append(chunk_id)
+                        self.label_request_chunks.append(chunk_id)
                         
            
             # Regardless of drift -- return predictions

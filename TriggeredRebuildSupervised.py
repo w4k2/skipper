@@ -11,9 +11,8 @@ class TriggeredRebuildSupervised:
     def process(self, stream, det, clf):
         
         self.scores = []
-        self.detections = []
+        self.label_request_chunks = []
         self.training_chunks = []
-        self.past_training_chunks = []
         
         pending_label_request_chunk_ids = []
         past_preds = []
@@ -51,9 +50,7 @@ class TriggeredRebuildSupervised:
                     else:
                         clf.fit(past_X, past_y)                    
                     
-                    self.detections.append(chunk_id)
-                    self.training_chunks.append(chunk_id-self.delta)
-                    self.past_training_chunks.append(chunk_id-self.delta)
+                    self.training_chunks.append(chunk_id)
                     
                 # Remove from pending list
                 pending_label_request_chunk_ids.remove(chunk_id-self.delta)
@@ -64,6 +61,7 @@ class TriggeredRebuildSupervised:
             
             # Always automatically request labels
             pending_label_request_chunk_ids.append(chunk_id)
+            self.label_request_chunks.append(chunk_id)
             # Save preds for later
             past_preds.append(preds)
             

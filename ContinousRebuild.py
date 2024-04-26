@@ -11,6 +11,9 @@ class ContinousRebuild:
     def process(self, stream, clf):
         
         self.scores = []        
+        self.label_request_chunks = []
+        self.training_chunks = []
+
         pending_label_request_chunk_ids = []
             
         for chunk_id in range(stream.n_chunks):
@@ -39,6 +42,7 @@ class ContinousRebuild:
                     clf.partial_fit(past_X, past_y, np.unique(past_y))
                 else:
                     clf.fit(past_X, past_y)
+                self.training_chunks.append(chunk_id)
                     
                 # Remove from pending list
                 pending_label_request_chunk_ids.remove(chunk_id-self.delta)
@@ -46,6 +50,7 @@ class ContinousRebuild:
             
             # Always automatically request labels
             pending_label_request_chunk_ids.append(chunk_id)   
+            self.label_request_chunks.append(chunk_id)
             
             preds = clf.predict(X)
             self.scores.append(self.score_metric(y, preds))

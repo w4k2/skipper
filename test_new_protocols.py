@@ -81,12 +81,9 @@ for f_id, f_name in enumerate(['CR', 'TS', 'TU', 'TUR']):
         maxm = np.max(framework.scores)
 
         ax.plot(framework.scores, color='b', label='accuracy')
-        try:
-                ax.vlines(framework.detections, minm, maxm, color='r', label='detections', alpha=0.2)
-                ax.vlines(framework.training_chunks, minm, maxm, color='g', label='training', alpha=0.2)
-                ax.vlines(framework.past_training_chunks, minm, maxm, color='g', label='training from', ls=':', alpha=0.2)
-        except:
-                pass
+        
+        ax.vlines(framework.label_request_chunks, minm, maxm, color='r', label='detections/label_request', alpha=0.2)
+        ax.vlines(framework.training_chunks, minm, maxm, color='g', label='training', alpha=0.2)
 
         ax.set_xticks(get_real_drift(500, 7).astype(int))
         ax.set_ylim(minm,1)
