@@ -7,7 +7,7 @@ def get_real_drift(n_ch, n_d):
     return real_drifts
 
 
-deltas = [1, 10, 20, 50]
+deltas = [1, 10, 20, 60]
 drifts = [5, 10, 15]
 n_epochs_mlp = [1,50,50,50]
 n_chunks = 500
@@ -49,6 +49,11 @@ for rep in range(3):
                             ax[f_id, d_id].set_title('delta = %i' % (d))
                         if d_id==0:
                             ax[f_id, d_id].set_ylabel(f)
+                            
+                        ax[f_id, d_id].spines['top'].set_visible(False)
+                        ax[f_id, d_id].spines['right'].set_visible(False)
+                        ax[f_id, d_id].set_xlim(0,n_chunks)
+
 
                         
                 ax[-1,-1].legend(frameon=False, ncols=3)
