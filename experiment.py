@@ -37,7 +37,7 @@ class MLPwrap:
     
 
 
-deltas = [1, 10, 20, 50]
+deltas = [1, 10, 20, 60]
 drifts = [5, 10, 15]
 n_epochs_mlp = [1,50,50,50]
 
@@ -45,7 +45,7 @@ n_epochs_mlp = [1,50,50,50]
 fit_partial_mode = True
 n_chunks = 500
 
-pbar = tqdm(total=len(r_states)*len(deltas)*4*3*len(drifts))
+pbar = tqdm(total=len(r_states)*len(deltas)*3*4*len(drifts))
 
 results = np.full(
     (len(r_states), len(deltas), 4, 3, len(drifts), 2, n_chunks-1, 3),
