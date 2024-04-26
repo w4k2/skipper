@@ -31,8 +31,8 @@ class ContinousRebuild:
             if chunk_id-self.delta in pending_label_request_chunk_ids:
                 # Fit clf with data from request moment
                 start, end = (
-                stream.chunk_size * chunk_id-self.delta,
-                stream.chunk_size * chunk_id-self.delta + stream.chunk_size,
+                stream.chunk_size * (chunk_id-self.delta),
+                stream.chunk_size * (chunk_id-self.delta) + stream.chunk_size,
                 )
 
                 past_X = stream.X[start:end]

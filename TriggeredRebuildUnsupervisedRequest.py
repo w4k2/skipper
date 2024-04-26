@@ -17,7 +17,7 @@ class TriggeredRebuildUnsupervisedRequest:
         pending_label_request_chunk_ids = []
         
         for chunk_id in range(stream.n_chunks):
-            print(chunk_id == det.chunk_count, chunk_id, det.chunk_count )
+            # print(chunk_id == det.chunk_count, chunk_id, det.chunk_count)
 
             X, y = stream.get_chunk()
 
@@ -39,8 +39,8 @@ class TriggeredRebuildUnsupervisedRequest:
                 if chunk_id-self.delta in pending_label_request_chunk_ids:
                     # Fit clf with data from request moment
                     start, end = (
-                    stream.chunk_size * chunk_id-self.delta,
-                    stream.chunk_size * chunk_id-self.delta + stream.chunk_size,
+                    stream.chunk_size * (chunk_id-self.delta),
+                    stream.chunk_size * (chunk_id-self.delta) + stream.chunk_size,
                     )
 
                     past_X = stream.X[start:end]
