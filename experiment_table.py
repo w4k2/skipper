@@ -70,10 +70,14 @@ fig, ax = plt.subplots(1,3, figsize=(15,15), sharex=True, sharey=True)
 ax[0].imshow(tab_data[:,:6], cmap='coolwarm', aspect='auto')
 ax[0].set_title('Balanced Accuracy')
 
-ax[1].imshow(tab_data[:,6:12], cmap='coolwarm', aspect='auto')
+ax[1].imshow(tab_data[:,6:12], 
+             cmap='coolwarm', aspect='auto',
+             vmin=0, vmax=0.04)
 ax[1].set_title('Label request in chunk')
 
-ax[2].imshow(tab_data[:,12:], cmap='coolwarm', aspect='auto')
+ax[2].imshow(tab_data[:,12:], 
+             cmap='coolwarm', aspect='auto',
+             vmin=0, vmax=0.04)
 ax[2].set_title('Training in chunk')
 
 # continous
@@ -103,7 +107,7 @@ for _a in range(12):
         ax[1].text(2*_b+0.5, _a, "%.3f" % (
             tab_data[_a, 2*_b+aa]
             ) , va='center', ha='center', 
-                   c='white',
+                   c='white' if (tab_data[_a, 2*_b+aa] > 0.75) else 'black', 
                    fontsize=11)
 
 # remaining
@@ -113,7 +117,7 @@ for _a in range(12,48):
         ax[1].text(_b, _a, "%.3f" % (
             tab_data[_a, _b + aa]
             ) , va='center', ha='center', 
-                   c='white', 
+                   c='white' if (tab_data[_a, _b+aa] > 0.75) else 'black', 
                    fontsize=11)
 
 
@@ -135,7 +139,7 @@ for _a in range(12,48):
         ax[2].text(_b, _a, "%.3f" % (
             tab_data[_a, _b + aa]
             ) , va='center', ha='center', 
-                   c='white', 
+                   c='black', 
                    fontsize=11)
 
 
@@ -143,5 +147,5 @@ for aa in ax:
     aa.set_xticks(np.arange(6), [r[4:] for r in rows[0][1:7]], rotation=90)
     aa.set_yticks(np.arange(len(env_names)), env_names)
 plt.tight_layout()
-plt.savefig('foo.png') 
+plt.savefig('table_vis.png') 
             
