@@ -35,19 +35,19 @@ class MLPwrap:
         return self.clf.predict(X)
     
 
-n_drifts = 7
+n_drifts = 15
 n_chunks = 500
 
-dets = [None, DDM(), OneClassDriftDetector(size = 250, dim = 20, percent = 0.995, nu=0.5), MD3()]
-# dets = [None, 
-#         Oracle(n_drifts=n_drifts, n_chunks=n_chunks), 
-#         Oracle(n_drifts=n_drifts, n_chunks=n_chunks), 
-#         Oracle(n_drifts=n_drifts, n_chunks=n_chunks)
-#         ]
+# dets = [None, DDM(), OneClassDriftDetector(size = 250, dim = 20, percent = 0.995, nu=0.5), MD3()]
+dets = [None, 
+        Oracle(n_drifts=n_drifts, n_chunks=n_chunks), 
+        Oracle(n_drifts=n_drifts, n_chunks=n_chunks), 
+        Oracle(n_drifts=n_drifts, n_chunks=n_chunks)
+        ]
 # clf = MLPWrap(MLPClassifier(random_state=997, hidden_layer_sizes=(10)))
 clf = HoeffdingTree()
 
-d = 20
+d = 50
 p = True
 frameworks = [
         ContinousRebuild(partial=p, delta=d),
@@ -85,7 +85,7 @@ for f_id, f_name in enumerate(['CR', 'TS', 'TU', 'TUR']):
         ax.vlines(framework.label_request_chunks, minm, maxm, color='r', label='detections/label_request', alpha=0.2)
         ax.vlines(framework.training_chunks, minm, maxm, color='g', label='training', alpha=0.2)
 
-        ax.set_xticks(get_real_drift(500, 7).astype(int))
+        ax.set_xticks(get_real_drift(500, n_drifts).astype(int))
         ax.set_ylim(minm,1)
         ax.legend(frameon=False, ncols=4)
         ax.spines['top'].set_visible(False)

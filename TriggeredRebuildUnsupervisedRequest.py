@@ -9,7 +9,7 @@ class TriggeredRebuildUnsupervisedRequest:
         self.partial = partial
 
     def process(self, stream, det, clf):
-        
+                
         self.scores = []
         self.label_request_chunks = []
         self.training_chunks = []
@@ -17,6 +17,8 @@ class TriggeredRebuildUnsupervisedRequest:
         pending_label_request_chunk_ids = []
         
         for chunk_id in range(stream.n_chunks):
+            print(chunk_id == det.chunk_count, chunk_id, det.chunk_count )
+
             X, y = stream.get_chunk()
 
             if chunk_id == 0:
@@ -59,6 +61,13 @@ class TriggeredRebuildUnsupervisedRequest:
                         # Request labels for current chunk
                         pending_label_request_chunk_ids.append(chunk_id)
                         self.label_request_chunks.append(chunk_id)
+                        
+                else:
+                    try: 
+                        # For Oracle detector
+                        det.empty_process()
+                    except:
+                        pass
                         
             else:
                 # Detection (unsupervised mode)

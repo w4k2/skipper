@@ -22,4 +22,8 @@ class Oracle():
         self.chunk_count+=1
 
         return self
-    
+
+    def empty_process(self):
+        # Used in case of Oracle detector to count chunks
+        self.chunk_count+=1
+        return self
