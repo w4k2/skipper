@@ -67,7 +67,8 @@ print(tab_data.shape)
 
 fig, ax = plt.subplots(1,3, figsize=(15,15), sharex=True, sharey=True)
 
-ax[0].imshow(tab_data[:,:6], cmap='coolwarm', aspect='auto')
+ax[0].imshow(tab_data[:,:6], cmap='coolwarm', aspect='auto',
+             vmin=0.5, vmax=0.8)
 ax[0].set_title('Balanced Accuracy', fontsize=15)
 
 ax[1].imshow(tab_data[:,6:12], 
