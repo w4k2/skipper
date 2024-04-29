@@ -67,7 +67,7 @@ tab_data = np.array(tab_data)
 print(tab_data.shape)
 
 #fig, ax = plt.subplots(1,3, figsize=(15,15), sharex=True, sharey=True)
-fig, ax = plt.subplots(4,3, figsize=(15,15), sharex=True, sharey=True)
+fig, ax = plt.subplots(4,3, figsize=(15,15), sharex=True, sharey=False)
 
 rows_per_framework = 12
 for framework_id in range(4):
@@ -166,10 +166,22 @@ for i, raa in enumerate(ax):
         
         _env_names = env_names[start:stop]
         
+        print(_env_names)
+        
         print('A', i, j, len(env_names), start, stop, len(_env_names))
         
-        aa.set_yticks(np.arange(len(_env_names)), _env_names, fontsize=15)
+        # aa.set_yticks(np.arange(len(_env_names)), _env_names, fontsize=15)
+        
+for i in range(4):        
+    start = i*rows_per_framework
+    stop = (i+1)*rows_per_framework
     
+    _env_names = env_names[start:stop]
+    
+    print(i, _env_names)
+    
+    ax[i,0].set_yticks(np.arange(len(_env_names)), _env_names, fontsize=15)
+
 plt.tight_layout()
 plt.savefig('table_vis.png') 
 plt.savefig('table_vis.eps') 
