@@ -2,7 +2,7 @@ import numpy as np
 from tabulate import tabulate
 import matplotlib.pyplot as plt
 
-deltas = [1, 10, 20, 50]
+deltas = [1, 10, 20, 60]
 drifts = [5, 10, 15]
 n_epochs_mlp = [1,50,50,50]
 n_chunks = 500
