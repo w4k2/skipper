@@ -66,47 +66,53 @@ tab_data = [r[1:] for r in tab_data]
 tab_data = np.array(tab_data)
 print(tab_data.shape)
 
-fig, ax = plt.subplots(1,3, figsize=(15,15), sharex=True, sharey=True)
+#fig, ax = plt.subplots(1,3, figsize=(15,15), sharex=True, sharey=True)
+fig, ax = plt.subplots(4,3, figsize=(15,15), sharex=True, sharey=True)
 
-ax[0].imshow(tab_data[:,:6], cmap='coolwarm', aspect='auto',
-             vmin=0.5, vmax=0.8)
-ax[0].set_title('Balanced Accuracy', fontsize=15)
+rows_per_framework = 12
+for framework_id in range(4):
+    start = framework_id*rows_per_framework
+    stop = (framework_id+1)*rows_per_framework
+    
+    ax[framework_id, 0].imshow(tab_data[start:stop,:6], cmap='coolwarm', aspect='auto',
+                vmin=0.5, vmax=0.8)
+    ax[framework_id, 0].set_title('Balanced Accuracy', fontsize=15)
 
-ax[1].imshow(tab_data[:,6:12], 
-             cmap='coolwarm', aspect='auto',
-             vmin=0, vmax=0.04)
-ax[1].set_title('Label request in chunk', fontsize=15)
+    ax[framework_id, 1].imshow(tab_data[start:stop,6:12], 
+                cmap='coolwarm', aspect='auto',
+                vmin=0, vmax=0.04)
+    ax[framework_id, 1].set_title('Label request in chunk', fontsize=15)
 
-ax[2].imshow(tab_data[:,12:], 
-             cmap='coolwarm', aspect='auto',
-             vmin=0, vmax=0.04)
-ax[2].set_title('Training in chunk', fontsize=15)
+    ax[framework_id, 2].imshow(tab_data[start:stop,12:], 
+                cmap='coolwarm', aspect='auto',
+                vmin=0, vmax=0.04)
+    ax[framework_id, 2].set_title('Training in chunk', fontsize=15)
 
 # continous
 for _a in range(12):
     for _b in range(3):
-        ax[0].text(2*_b+0.5, _a, "%.3f" % (
+        ax[0, 0].text(2*_b+0.5, _a, "%.3f" % (
             tab_data[_a, 2*_b]
             ) , va='center', ha='center', 
-                   c='white' if (tab_data[_a, 2*_b] >0.75) or (tab_data[_a, 2*_b]<0.55) else 'black', 
-                   fontsize=11)
+                c='white' if (tab_data[_a, 2*_b] >0.75) or (tab_data[_a, 2*_b]<0.55) else 'black', 
+                fontsize=11)
 
 # remaining
 for _a in range(12,48):
     for _b in range(6):
-        ax[0].text(_b, _a, "%.3f" % (
-            tab_data[_a, _b]
-            ) , va='center', ha='center', 
-                   c='white' if (tab_data[_a, _b] >0.75) or (tab_data[_a, _b]<0.55) else 'black', 
-                   fontsize=11)
+        framework_id = _a // rows_per_framework
+        print(framework_id, _a, _b)
         
-
+        ax[framework_id, 0].text(_b, _a%rows_per_framework, tab_data[_a, _b],
+                                 ha='center', va='center',
+                                 c='white' if (tab_data[_a, _b] >0.75) or (tab_data[_a, _b]<0.55) else 'black',
+                                 fontsize=11)
 
 # continous
 for _a in range(12):
     for _b in range(3):
         aa = 6
-        ax[1].text(2*_b+0.5, _a, "%.3f" % (
+        ax[0, 1].text(2*_b+0.5, _a, "%.3f" % (
             tab_data[_a, 2*_b+aa]
             ) , va='center', ha='center', 
                    c='white' if (tab_data[_a, 2*_b+aa] > 0.75) else 'black', 
@@ -115,8 +121,10 @@ for _a in range(12):
 # remaining
 for _a in range(12,48):
     for _b in range(6):
+        framework_id = _a // rows_per_framework
+        
         aa = 6
-        ax[1].text(_b, _a, "%.3f" % (
+        ax[framework_id, 1].text(_b, _a%rows_per_framework, "%.3f" % (
             tab_data[_a, _b + aa]
             ) , va='center', ha='center', 
                    c='white' if (tab_data[_a, _b+aa] > 0.75) else 'black', 
@@ -128,7 +136,7 @@ for _a in range(12,48):
 for _a in range(12):
     for _b in range(3):
         aa = 12
-        ax[2].text(2*_b+0.5, _a, "%.3f" % (
+        ax[0, 2].text(2*_b+0.5, _a, "%.3f" % (
             tab_data[_a, 2*_b+aa]
             ) , va='center', ha='center', 
                    c='white',
@@ -137,17 +145,28 @@ for _a in range(12):
 # remaining
 for _a in range(12,48):
     for _b in range(6):
+        framework_id = _a // rows_per_framework
+        
         aa = 12
-        ax[2].text(_b, _a, "%.3f" % (
+        ax[framework_id, 2].text(_b, _a%rows_per_framework, "%.3f" % (
             tab_data[_a, _b + aa]
             ) , va='center', ha='center', 
                    c='black', 
                    fontsize=11)
 
-
-for aa in ax:
-    aa.set_xticks(np.arange(6), [r[4:] for r in rows[0][1:7]], rotation=90, fontsize=15)
-    aa.set_yticks(np.arange(len(env_names)), env_names, fontsize=15)
+for i, raa in enumerate(ax):
+    for j, aa in enumerate(raa):
+        aa.set_xticks(np.arange(6), [r[4:] for r in rows[0][1:7]], rotation=90, fontsize=15)
+        # aa.set_yticks(np.arange(len(env_names)), env_names, fontsize=15)
+        
+        start = i*rows_per_framework
+        stop = (i+1)*rows_per_framework
+        
+        _env_names = env_names[start:stop]
+        
+        print('A', i, j, len(env_names), start, stop, len(_env_names))
+        
+        aa.set_yticks(np.arange(len(_env_names)), _env_names, fontsize=15)
     
 plt.tight_layout()
 plt.savefig('table_vis.png') 
