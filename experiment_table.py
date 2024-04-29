@@ -17,6 +17,7 @@ dets = ['Oracle', 'Real']
 results = np.load('results.npy')
 # reps, deltas, frameworks, classifiers, drifts, detectors, chunks, (bac, detections, trainings)
 
+
 m_accs = np.nanmean(results[...,0], axis=(-1,0))
 m_requests = (np.mean(np.sum((np.isnan(results[...,1])==False), axis=-1), axis=0)/n_chunks)
 m_trainings = (np.mean(np.sum((np.isnan(results[...,2])==False), axis=-1), axis=0)/n_chunks)
@@ -38,9 +39,9 @@ for framework_id, framework in enumerate(frameworks):
     for n_drifts_id, n_drifts in enumerate(drifts):
         for delta_id, delta in enumerate(deltas):
             
-            temp_acc = np.round(m_accs[delta_id, framework_id, n_drifts_id],3)
-            temp_req = np.round(m_requests[delta_id, framework_id, n_drifts_id],3)
-            temp_trg = np.round(m_trainings[delta_id, framework_id, n_drifts_id],3)
+            temp_acc = np.round(m_accs[delta_id, framework_id, :, n_drifts_id],3)
+            temp_req = np.round(m_requests[delta_id, framework_id, :, n_drifts_id],3)
+            temp_trg = np.round(m_trainings[delta_id, framework_id, :, n_drifts_id],3)
             
             env_name = '%s (%02d) | %02d Drf' % (framework, delta, n_drifts)
             rows.append([env_name,
