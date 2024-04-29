@@ -42,7 +42,7 @@ for framework_id, framework in enumerate(frameworks):
             temp_req = np.round(m_requests[delta_id, framework_id, n_drifts_id],3)
             temp_trg = np.round(m_trainings[delta_id, framework_id, n_drifts_id],3)
             
-            env_name = '%s | %i DRF | %i Delta' % (framework, n_drifts, delta)
+            env_name = '%s (%02d) | %02d Drf' % (framework, delta, n_drifts)
             rows.append([env_name,
                          temp_acc[0,0], temp_acc[0,1], temp_acc[1,0], temp_acc[1,1], temp_acc[2,0], temp_acc[2,1],     
                          temp_req[0,0], temp_req[0,1], temp_req[1,0], temp_req[1,1], temp_req[2,0], temp_req[2,1],     
@@ -56,7 +56,7 @@ f = open("table.txt", "w")
 f.write(tab)
 f.close()
 
-# ---
+# --- ---- ----- ----- ----- ----- ----- 
 
 tab_data = rows[1:]
 env_names = [r[0] for r in tab_data]
@@ -68,17 +68,17 @@ print(tab_data.shape)
 fig, ax = plt.subplots(1,3, figsize=(15,15), sharex=True, sharey=True)
 
 ax[0].imshow(tab_data[:,:6], cmap='coolwarm', aspect='auto')
-ax[0].set_title('Balanced Accuracy')
+ax[0].set_title('Balanced Accuracy', fontsize=15)
 
 ax[1].imshow(tab_data[:,6:12], 
              cmap='coolwarm', aspect='auto',
              vmin=0, vmax=0.04)
-ax[1].set_title('Label request in chunk')
+ax[1].set_title('Label request in chunk', fontsize=15)
 
 ax[2].imshow(tab_data[:,12:], 
              cmap='coolwarm', aspect='auto',
              vmin=0, vmax=0.04)
-ax[2].set_title('Training in chunk')
+ax[2].set_title('Training in chunk', fontsize=15)
 
 # continous
 for _a in range(12):
@@ -144,8 +144,11 @@ for _a in range(12,48):
 
 
 for aa in ax:
-    aa.set_xticks(np.arange(6), [r[4:] for r in rows[0][1:7]], rotation=90)
-    aa.set_yticks(np.arange(len(env_names)), env_names)
+    aa.set_xticks(np.arange(6), [r[4:] for r in rows[0][1:7]], rotation=90, fontsize=15)
+    aa.set_yticks(np.arange(len(env_names)), env_names, fontsize=15)
+    
 plt.tight_layout()
 plt.savefig('table_vis.png') 
+plt.savefig('table_vis.eps') 
+plt.savefig('foo.png') 
             
