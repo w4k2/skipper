@@ -36,8 +36,9 @@ for rep in range(3):
                 for d_id, d in enumerate(deltas):
                     for f_id, f in enumerate(frameworks):
                     
-                        ax[f_id, d_id].vlines(results[rep, d_id, f_id, clf_id, n_d_id, det_id, :, 1], 0, 1, label = 'requests', color='tomato', alpha=1, ls=':')
+                        ax[f_id, d_id].vlines(results[rep, d_id, f_id, clf_id, n_d_id, det_id, :, 1], 0, 1, label = 'requests', color='tomato', alpha=1, ls='--')
                         ax[f_id, d_id].vlines(results[rep, d_id, f_id, clf_id, n_d_id, det_id, :, 2],0, 1, label = 'training', color='cornflowerblue', alpha=1, ls=':')
+
                         ax[f_id, d_id].plot(np.arange(1,500),
                             results[rep, d_id, f_id, clf_id, n_d_id, det_id, :, 0], 
                             label = 'bac', color='b')
