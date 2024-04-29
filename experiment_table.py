@@ -76,17 +76,19 @@ for framework_id in range(4):
     
     ax[framework_id, 0].imshow(tab_data[start:stop,:6], cmap='coolwarm', aspect='auto',
                 vmin=0.5, vmax=0.8)
-    ax[framework_id, 0].set_title('Balanced Accuracy', fontsize=15)
 
     ax[framework_id, 1].imshow(tab_data[start:stop,6:12], 
                 cmap='coolwarm', aspect='auto',
                 vmin=0, vmax=0.04)
-    ax[framework_id, 1].set_title('Label request in chunk', fontsize=15)
 
     ax[framework_id, 2].imshow(tab_data[start:stop,12:], 
                 cmap='coolwarm', aspect='auto',
                 vmin=0, vmax=0.04)
-    ax[framework_id, 2].set_title('Training in chunk', fontsize=15)
+    
+    if framework_id == 0:
+        ax[framework_id, 0].set_title('Balanced Accuracy', fontsize=15)
+        ax[framework_id, 1].set_title('Label request in chunk', fontsize=15)
+        ax[framework_id, 2].set_title('Training in chunk', fontsize=15)
 
 # continous
 for _a in range(12):
