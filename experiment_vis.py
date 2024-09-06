@@ -19,7 +19,7 @@ frameworks = ['CR',
 clfs = ['MLP', 'HT', 'GNB']
 dets = ['Oracle', 'Real']
 
-results = np.load('results.npy')
+results = np.load('results/results.npy')
 # reps, deltas, frameworks, classifiers, drifts, detectors, chunks, (bac, detections, trainings)
 
 print(results.shape)

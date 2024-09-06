@@ -1,13 +1,16 @@
 # skipper
 
-## Continous Rebuild
-![Continous Rebuild](CR.png "Continous Rebuild")
+## Contents:
 
-## Triggered Rebuild - Supervised
-![Triggered Rebuild - Supervised](TS.png "Triggered Rebuild - Supervised")
+### *cd* -- graphs of critical difference diagrams
+### *detectors* -- implementation of drift detectors
+### *fig_frameworks* -- plots of recognition quality, label request moments and drift detection moments
+### *frameworks* -- implementation of frameworks
+### *results* -- results of experiment
+### *tables* -- plots of tables & tables
+### *vapor* -- nothing.
 
-## Triggered Rebuild - Unsupervised
-![Triggered Rebuild - Unsupervised](TU.png "Triggered Rebuild - Unsupervised")
-
-## Triggered Rebuild - Unsupervised with label request
-![Unsupervised with label request](TUR.png "Unsupervised with label request")
+#
+### *experiment.py* -- experiment
+### *experiment_vis.py* -- script for plotting results of experiment
+### *experiment_table.py* -- script for generating and plotting tables

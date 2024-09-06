@@ -7,10 +7,10 @@ from detectors.ddm import DDM
 from detectors.MD3 import MD3
 from detectors.OCDD import OneClassDriftDetector
 
-from ContinousRebuild import ContinousRebuild
-from TriggeredRebuildSupervised import TriggeredRebuildSupervised
-from TriggeredRebuildUnsupervised import TriggeredRebuildUnsupervised
-from TriggeredRebuildUnsupervisedRequest import TriggeredRebuildUnsupervisedRequest
+from frameworks.ContinousRebuild import ContinousRebuild
+from frameworks.TriggeredRebuildSupervised import TriggeredRebuildSupervised
+from frameworks.TriggeredRebuildUnsupervised import TriggeredRebuildUnsupervised
+from frameworks.TriggeredRebuildUnsupervisedRequest import TriggeredRebuildUnsupervisedRequest
 
 from skmultiflow.trees import HoeffdingTree
 from sklearn.neural_network import MLPClassifier
@@ -123,8 +123,4 @@ for rs_id, rs in enumerate(r_states):
                     print(results[rs_id, delta_id, f_id, clf_id, n_drifts_id])
                     pbar.update(1)
 
-        np.save('results.npy', results)
-
-                    
-                
-        
+        np.save('results/results.npy', results)

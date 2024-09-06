@@ -14,7 +14,7 @@ frameworks = ['CR',
 clfs = ['MLP', 'HT', 'GNB']
 dets = ['Oracle', 'Real']
 
-results = np.load('results.npy')
+results = np.load('results/results.npy')
 # reps, deltas, frameworks, classifiers, drifts, detectors, chunks, (bac, detections, trainings)
 
 
@@ -53,7 +53,7 @@ for framework_id, framework in enumerate(frameworks):
 tab = tabulate(rows, tablefmt="latex")
 print(tab)
 
-f = open("table.txt", "w")
+f = open("tables/table.txt", "w")
 f.write(tab)
 f.close()
 
@@ -183,7 +183,7 @@ for i in range(4):
     ax[i,0].set_yticks(np.arange(len(_env_names)), _env_names, fontsize=15)
 
 plt.tight_layout()
-plt.savefig('table_vis.png') 
-plt.savefig('table_vis.eps') 
+plt.savefig('tables/table_vis.png') 
+plt.savefig('tables/table_vis.eps') 
 plt.savefig('foo.png') 
             
