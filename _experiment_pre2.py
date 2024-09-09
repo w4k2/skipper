@@ -37,8 +37,11 @@ for n in tqdm(range(n_reps)):
 
     clf = GaussianNB()
     
-    det_supp = DDM(drift_lvl=2.)
-    det_unsupp = OneClassDriftDetector(size = 500, dim = 20, percent = 0.995, nu=0.5)
+    det_supp = DDM(drift_lvl=1., skip=10)
+    det_unsupp = OneClassDriftDetector(size = 500, 
+                                       dim = 20, 
+                                       percent = 0.7, 
+                                       nu=0.5)
     
     for c in range(n_chunks):
         X, y = stream.get_chunk()
@@ -84,8 +87,10 @@ ax.set_xlabel('chunk')
 ax.set_ylabel('replication')
 
 handles, labels = plt.gca().get_legend_handles_labels()
-line1 = Line2D([0], [0], label='supervised', color='red', marker='s', markersize=10, linestyle='')
-line2 = Line2D([0], [0], label='unsupervised', color='blue')
+line1 = Line2D([0], [0], label='supervised', color='red', 
+               marker='o', alpha=0.5, linestyle='')
+line2 = Line2D([0], [0], label='unsupervised', color='blue',
+                marker='o', alpha=0.5, linestyle='')
 line3 = Line2D([0], [0], label='concept probability', color='black', ls=':')
 handles.extend([line1, line2, line3])
 plt.legend(handles=handles, frameon=False)
