@@ -15,7 +15,7 @@ n_chunks = 500
 frameworks = ['CR',
               'TR-S',
               'TR-U',
-              'TR-UR']
+              'TR-P']
 clfs = ['MLP', 'HT', 'GNB']
 dets = ['Oracle', 'Real']
 
@@ -24,7 +24,7 @@ results = np.load('results/results.npy')
 
 print(results.shape)
         
-mag = 2
+mag = 2.25
 
 for rep in range(3):
     for clf_id, clf in enumerate(clfs):
@@ -44,18 +44,18 @@ for rep in range(3):
                             results[rep, d_id, f_id, clf_id, n_d_id, det_id, :, 1], 
                             0, 
                             1, 
-                            label = 'request moments', 
+                            label = 'Label request', 
                             color='tomato', lw=1)
                         ax[f_id, d_id].vlines(
                             results[rep, d_id, f_id, clf_id, n_d_id, det_id, :, 2],
                             0, 
                             1, 
-                            label = 'trainin moments', color='cornflowerblue', alpha=1, ls=':', lw=1)
+                            label = 'Classifier training', color='cornflowerblue', alpha=1, ls=':', lw=1)
 
                         ax[f_id, d_id].plot(
                             np.arange(1,500),
                             results[rep, d_id, f_id, clf_id, n_d_id, det_id, :, 0], 
-                            label = 'bac', 
+                            label = 'BAC', 
                             color='k', lw=1)
                                 
                         ax[f_id, d_id].grid(ls=':')
@@ -63,10 +63,10 @@ for rep in range(3):
                             get_real_drift(n_chunks, n_d).astype(int))
 
                         if f_id==0:
-                            ax[f_id, d_id].set_title('delta = %i' % (d))
-                            ax[-1, d_id].set_xlabel('chunk')
+                            ax[f_id, d_id].set_title('$\delta = %i$' % (d))
+                            ax[-1, d_id].set_xlabel('$chunk$')
                         if d_id==0:
-                            ax[f_id, d_id].set_ylabel(f)
+                            ax[f_id, d_id].set_ylabel('$%s$' % f)
                             
                         ax[f_id, d_id].spines['top'].set_visible(False)
                         ax[f_id, d_id].spines['right'].set_visible(False)
@@ -76,7 +76,7 @@ for rep in range(3):
                 handles, labels = ax[-1,-1].get_legend_handles_labels()
                 fig.legend(handles, labels, loc='lower center', ncol=3, frameon=False)
                         
-                plt.subplots_adjust(left=0.1, right=0.9, top=0.85, bottom=0.15)
+                plt.subplots_adjust(left=0.07, right=0.97, top=0.9, bottom=0.13)
                 # ax[-1,-1].legend(frameon=False, ncols=3)
                 # plt.tight_layout()
                 plt.savefig('foo.png', dpi=500)

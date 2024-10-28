@@ -10,7 +10,7 @@ n_chunks = 500
 frameworks = ['CR',
               'TR-S',
               'TR-U',
-              'TR-UR']
+              'TR-P']
 clfs = ['MLP', 'HT', 'GNB']
 dets = ['Oracle', 'Real']
 
@@ -68,7 +68,7 @@ print(tab_data.shape)
 """
 HERE COMES THE SUN
 """
-fig, ax = plt.subplots(4,4, figsize=(9,9*1.618), sharex=False, sharey=False,
+fig, ax = plt.subplots(4,4, figsize=(11,11), sharex=False, sharey=False,
                        width_ratios=[1,1,1,.4])
 
 
@@ -200,10 +200,14 @@ for i in range(4):
     
     # ax[i,0].set_yticks(np.arange(len(_env_names)), _env_names, fontsize=15)
 
-ax[0,0].set_ylabel('\nContinous Rebuild')
-ax[1,0].set_ylabel('Triggered Rebuild\nSupervised drift detection')
-ax[2,0].set_ylabel('Triggered Rebuild\nUnsupervised drift detection')
-ax[3,0].set_ylabel('Triggered Rebuild\nSemi-supervised drift detection')
+# ax[0,0].set_ylabel('\nContinous Rebuild')
+# ax[1,0].set_ylabel('Triggered Rebuild\nSupervised drift detection')
+# ax[2,0].set_ylabel('Triggered Rebuild\nUnsupervised drift detection')
+# ax[3,0].set_ylabel('Triggered Rebuild\nSemi-supervised drift detection')
+ax[0,0].set_ylabel('$CR$')
+ax[1,0].set_ylabel('$TR-S$')
+ax[2,0].set_ylabel('$TR-U$')
+ax[3,0].set_ylabel('$TR-P$')
 
 
 for i in range(4):
@@ -224,7 +228,7 @@ for i in range(4):
 
 #plt.tight_layout()
 
-plt.subplots_adjust(left=0.05, right=1., top=0.95, bottom=0.05)
+plt.subplots_adjust(left=0.05, right=1., top=0.95, bottom=0.07)
 
 plt.savefig('tables/table_vis.png') 
 plt.savefig('tables/table_vis.eps') 
