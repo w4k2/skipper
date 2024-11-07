@@ -78,7 +78,7 @@ for z in range(4):
 
     ax[z, -1].tick_params(top=True, labeltop=True, bottom=False, labelbottom=False)
     ax[z, -1].set_xlim(-.5, 1.5)
-    ax[z, -1].spines['right'].set_visible(False)
+    # ax[z, -1].spines['right'].set_visible(False)
     ax[z, -1].set_xticks([0,1], ['$\delta$', 'Drifts'])
     ax[z, -1].set_yticks([3.5,7.5],['',''])
     ax[z, -1].grid(ls=":", axis='y')
@@ -228,7 +228,7 @@ for i in range(4):
 
 #plt.tight_layout()
 
-plt.subplots_adjust(left=0.05, right=1., top=0.95, bottom=0.07)
+plt.subplots_adjust(left=0.05, right=.95, top=0.95, bottom=0.07)
 
 plt.savefig('tables/table_vis.png') 
 plt.savefig('tables/table_vis.eps') 
