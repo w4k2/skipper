@@ -2,7 +2,7 @@
 import numpy as np
 from sklearn.metrics import balanced_accuracy_score
 
-class TriggeredRebuildUnsupervisedRequest:
+class TriggeredRebuildPartiallyUnsupervised:
     def __init__(self, score_metric=balanced_accuracy_score, delta=10, partial=True):
         self.score_metric = score_metric
         self.delta = delta # Number of chunks for the labels to arrive since explicit request 

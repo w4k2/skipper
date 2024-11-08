@@ -10,8 +10,7 @@ from detectors.OCDD import OneClassDriftDetector
 from frameworks.ContinousRebuild import ContinousRebuild
 from frameworks.TriggeredRebuildSupervised import TriggeredRebuildSupervised
 from frameworks.TriggeredRebuildUnsupervised import TriggeredRebuildUnsupervised
-from frameworks.TriggeredRebuildUnsupervisedRequest import TriggeredRebuildUnsupervisedRequest
-
+from frameworks.TriggeredRebuildPartiallyUnsupervised import TriggeredRebuildPartiallyUnsupervised
 from skmultiflow.trees import HoeffdingTree
 from sklearn.neural_network import MLPClassifier
 from sklearn.naive_bayes import GaussianNB
@@ -58,7 +57,7 @@ for rs_id, rs in enumerate(r_states):
                 ContinousRebuild(partial=fit_partial_mode, delta=d),
                 TriggeredRebuildSupervised(partial=fit_partial_mode, delta=d),
                 TriggeredRebuildUnsupervised(partial=fit_partial_mode, delta=d),
-                TriggeredRebuildUnsupervisedRequest(partial=fit_partial_mode, delta=d)
+                TriggeredRebuildPartiallyUnsupervised(partial=fit_partial_mode, delta=d)
         ]
         
         for f_id, f in enumerate(frameworks):
