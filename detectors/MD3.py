@@ -6,7 +6,7 @@ class MD3:
         self.sigma = sigma
         self.first = True
         
-    def process(self, X, y):
+    def process(self, X, y=None):
         if self.first:
             self.model = LinearSVC().fit(X, y)
             self.first = False

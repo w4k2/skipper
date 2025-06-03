@@ -68,8 +68,8 @@ print(tab_data.shape)
 """
 HERE COMES THE SUN
 """
-fig, ax = plt.subplots(4,4, figsize=(11,11), sharex=False, sharey=False,
-                       width_ratios=[1,1,1,.4])
+fig, ax = plt.subplots(4,4, figsize=(9,10), sharex=False, sharey=False,
+                       width_ratios=[1,1,1,.25])
 
 
 # Right legend
@@ -79,7 +79,10 @@ for z in range(4):
     ax[z, -1].tick_params(top=True, labeltop=True, bottom=False, labelbottom=False)
     ax[z, -1].set_xlim(-.5, 1.5)
     # ax[z, -1].spines['right'].set_visible(False)
-    ax[z, -1].set_xticks([0,1], ['$\delta$', 'Drifts'])
+    if z==0:
+        ax[z, -1].set_xticks([0,1], ['$\delta$', 'Drifts'])
+    else:
+        ax[z, -1].set_xticks([])
     ax[z, -1].set_yticks([3.5,7.5],['',''])
     ax[z, -1].grid(ls=":", axis='y')
 
@@ -88,6 +91,9 @@ for z in range(4):
         ax[z, -1].text(1,9.5-i*4,v_drifts, ha='center', va='center')
         for j, v_delta in enumerate([1,10,20,60]):        
             ax[z, -1].text(0,11-(j+i*4),v_delta, ha='center', va='center')
+
+
+# ---
 
 rows_per_framework = 12
 for framework_id in range(4):
@@ -107,8 +113,8 @@ for framework_id in range(4):
     
     if framework_id == 0:
         ax[framework_id, 0].set_title('Balanced Accuracy')
-        ax[framework_id, 1].set_title('Label request in chunk')
-        ax[framework_id, 2].set_title('Training in chunk')
+        ax[framework_id, 1].set_title('Label request chunks')
+        ax[framework_id, 2].set_title('Training chunks')
 
 # continous
 for _a in range(12):
@@ -177,33 +183,7 @@ for _a in range(12,48):
 for i, raa in enumerate(ax):
     for j, aa in enumerate(raa[:-1]):
         aa.set_xticks(np.arange(6), [r[4:] for r in rows[0][1:7]], rotation=90)
-        # aa.set_yticks(np.arange(len(env_names)), env_names, fontsize=15)
         
-        start = i*rows_per_framework
-        stop = (i+1)*rows_per_framework
-        
-        _env_names = env_names[start:stop]
-        
-        # print(_env_names)
-        
-        # print('A', i, j, len(env_names), start, stop, len(_env_names))
-        
-        # aa.set_yticks(np.arange(len(_env_names)), _env_names, fontsize=15)
-        
-for i in range(4):        
-    start = i*rows_per_framework
-    stop = (i+1)*rows_per_framework
-    
-    _env_names = env_names[start:stop]
-    
-    # print(i, _env_names)
-    
-    # ax[i,0].set_yticks(np.arange(len(_env_names)), _env_names, fontsize=15)
-
-# ax[0,0].set_ylabel('\nContinous Rebuild')
-# ax[1,0].set_ylabel('Triggered Rebuild\nSupervised drift detection')
-# ax[2,0].set_ylabel('Triggered Rebuild\nUnsupervised drift detection')
-# ax[3,0].set_ylabel('Triggered Rebuild\nSemi-supervised drift detection')
 ax[0,0].set_ylabel('$CR$')
 ax[1,0].set_ylabel('$TR-S$')
 ax[2,0].set_ylabel('$TR-U$')
@@ -212,21 +192,19 @@ ax[3,0].set_ylabel('$TR-P$')
 
 for i in range(4):
     for j in range(3):
-        # ax[i,j].spines['top'].set_visible(False)
-        # ax[i,j].spines['right'].set_visible(False)
-        # ax[i,j].spines['left'].set_visible(False)
-        # ax[i,j].spines['bottom'].set_visible(False)
-        
-        ax[i,j].set_yticks([])
-        
+        ax[i,j].set_yticks([])   
         ax[i,j].hlines([3.5,7.5], -.5, 5.5, lw=1, color='white', alpha=.5)
-        
         ax[i,j].vlines([1.5, 3.5], -.5, 11.5, lw=1, color='white', alpha=.5)
-        
         if i < 3:
             ax[i,j].set_xticks([])
+            
+for aa in ax[:,:-1].ravel():
+    aa.spines['top'].set_visible(False)
+    aa.spines['right'].set_visible(False)
+    aa.spines['left'].set_visible(False)
+    aa.spines['bottom'].set_visible(False)
 
-#plt.tight_layout()
+plt.tight_layout()
 
 plt.subplots_adjust(left=0.05, right=.95, top=0.95, bottom=0.07)
 

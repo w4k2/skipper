@@ -24,14 +24,13 @@ results = np.load('results/results.npy')
 
 print(results.shape)
         
-mag = 2.25
 
 for rep in range(3):
     for clf_id, clf in enumerate(clfs):
         for n_d_id, n_d in enumerate(drifts):
             for det_id, det in enumerate(dets):
 
-                fig, ax = plt.subplots(4,4, figsize=(4.5*mag,mag*4.5/1.618), sharex=True, sharey=True)
+                fig, ax = plt.subplots(4,4, figsize=(10,7), sharex=True, sharey=True)
                 
                 title = '%s classifier with %s detector on data stream with %i concept drifts' % (clf, det, n_d)
                 
