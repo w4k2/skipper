@@ -15,7 +15,7 @@ print(results.shape) # classes, deltas (4), frameworks (4), chunks, metrics
 for class_id in range(results.shape[0]):
         
     fig, ax = plt.subplots(4, 4, figsize=(12,8), sharex=True, sharey=True)
-    plt.suptitle('MLP | Covtype | class: %i' % class_id)
+    plt.suptitle('MLP | Covtype | class: %i vs rest' % class_id)
 
     for f_id, f in enumerate(frameworks):
         ax[0, f_id].set_title(f)
@@ -33,12 +33,7 @@ for class_id in range(results.shape[0]):
                 x2, np.full_like(x2, 1),
                 color=plt.cm.coolwarm([0.1]), s=20, alpha=1)
             ax_twin.set_ylim(-0.5,2.3)
-            
-            # ax_twin.set_yticks([0,1], ['Label request', 'Training'], rotation=0)
             ax_twin.set_yticks([])
-            # colors = plt.cm.coolwarm([0.0, 1.0])
-            # ax_twin.get_yticklabels()[0].set_color(colors[1])
-            # ax_twin.get_yticklabels()[1].set_color(colors[0])
 
             ax[f_id, d_id].plot(
                 np.arange(n_chunks),
