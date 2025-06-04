@@ -15,7 +15,7 @@ print(results.shape) # classes, deltas (4), frameworks (4), chunks, metrics
 for class_id in range(results.shape[0]):
         
     fig, ax = plt.subplots(4, 4, figsize=(12,8), sharex=True, sharey=True)
-    plt.suptitle('MLP | Covtype | class: %i vs rest' % class_id)
+    plt.suptitle('MLP | Covertype | class %i vs others' % class_id)
 
     for f_id, f in enumerate(frameworks):
         ax[0, f_id].set_title(f)
