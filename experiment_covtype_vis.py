@@ -1,32 +1,19 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def get_real_drift(n_ch, n_d):
-    real_drifts = np.linspace(0,n_ch,n_d+1)[:-1]
-    real_drifts += (real_drifts[1]/2)
-    return real_drifts
-
-
 deltas = [1, 10, 20, 60]
-drifts = [5, 10, 15]
-n_epochs_mlp = [1,50,50,50]
-n_chunks = 500
 
 frameworks = ['Continuous Rebuild (CR)',
               'Triggered Rebuild Supervised (TR-S)',
               'Triggered Rebuild Unsupervised (TR-U)',
               'Triggered Rebuild Partially Unsupervised (TR-P)']
-clfs = ['MLP', 'HT', 'GNB']
-dets = ['Oracle', 'Real']
 
-results = np.load('results/results.npy')
-# reps, deltas, frameworks, classifiers, drifts, detectors, chunks, (bac, detections, trainings)
+results = np.load('results/res_covtype.npy')
+n_chunks = results.shape[2]
 
-print(results.shape)
+print(results.shape) # deltas (4), frameworks (4), chunks, metrics        
 
-selected_results = results[0,:,:,0,0,0] # delatas (4), frameworks(4), chunks, metrics
-print(selected_results.shape)
-        
+fig, ax = plt.subplots(4,4, figsize=(10,7), sharex=True, sharey=True)
 
 for f_id, f in enumerate(frameworks):
     fig, ax = plt.subplots(4, 1, figsize=(6,8), sharex=True, sharey=True)
@@ -35,8 +22,8 @@ for f_id, f in enumerate(frameworks):
 
     for d_id, d in enumerate(deltas):
     
-        x1 = selected_results[d_id, f_id, :, 1]
-        x2 = selected_results[d_id, f_id, :, 2]
+        x1 = results[d_id, f_id, :, 1]
+        x2 = results[d_id, f_id, :, 2]
         ax_twin = ax[d_id].twinx()
         
         ax_twin.scatter(
@@ -53,14 +40,11 @@ for f_id, f in enumerate(frameworks):
         ax_twin.get_yticklabels()[1].set_color(colors[0])
 
         ax[d_id].plot(
-            np.arange(1,500),
-            selected_results[d_id, f_id, :, 0],
+            np.arange(n_chunks),
+            results[d_id, f_id, :, 0],
             color='k', lw=1)
                 
         ax[d_id].grid(ls=':')
-        ax[d_id].set_xticks(
-            get_real_drift(n_chunks, 5).astype(int))
-
         ax[d_id].set_ylabel('$\delta = %i$ \n balanced accuracy' % (d))
         
         if d_id==3:
@@ -80,7 +64,7 @@ for f_id, f in enumerate(frameworks):
 
     plt.tight_layout()
     plt.savefig('foo.png', dpi=500)
-    plt.savefig('fig_frameworks/vis_single_%i.png' % f_id)
-    plt.savefig('fig_frameworks/vis_single_%i.eps' % f_id)
+    plt.savefig('fig_frameworks/covtype_%i.png' % f_id)
+    plt.savefig('fig_frameworks/covtype_%i.eps' % f_id)
 
     # exit()

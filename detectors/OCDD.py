@@ -16,7 +16,7 @@ class OneClassDriftDetector():
         self.drift_count = 0
         self.window_index = 0
         
-        self.clf = svm.OneClassSVM(nu=self.nu, kernel="rbf", gamma='auto')
+        self.clf = svm.OneClassSVM(nu=self.nu, kernel="rbf")
         self.first = True
         
         self.is_drift_inner = False
@@ -24,6 +24,7 @@ class OneClassDriftDetector():
         self.i = 0
         
     def process(self, X):
+        
         
         self._is_drift = False
         for instance in X:
@@ -38,6 +39,7 @@ class OneClassDriftDetector():
             else:
                 # Check drift
                 temp, freq = np.unique(self.win_outlier, return_counts=True)
+                # print(freq[0]/self.size)
                 if ((freq[0]/self.size) > self.percent):
                     self.window_index = int(self.size * (1-self.percent))
                     self.drift_count = self.drift_count + 1
