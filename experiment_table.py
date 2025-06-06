@@ -112,9 +112,9 @@ for framework_id in range(4):
                 vmin=0, vmax=0.04)
     
     if framework_id == 0:
-        ax[framework_id, 0].set_title('Balanced Accuracy')
-        ax[framework_id, 1].set_title('Label request chunks')
-        ax[framework_id, 2].set_title('Training chunks')
+        ax[framework_id, 0].set_title('Balanced Accuracy ($BAC$)')
+        ax[framework_id, 1].set_title('Label request ($LReq$)')
+        ax[framework_id, 2].set_title('Training request ($TReq$)')
 
 # continous
 for _a in range(12):

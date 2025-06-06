@@ -3,6 +3,8 @@ from scipy.stats import rankdata
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+from scipy.stats import friedmanchisquare
+from scipy.stats import chi2
 
 def compute_CD(avranks, n):
     k = len(avranks)
@@ -229,8 +231,13 @@ def graph_ranks(avranks, names, cd, width=6, textspace=1, reverse=False, title=N
     
     return fig
     
-
-        
+def friedman_test(X, alpha=0.05):
+    N = X.shape[0]
+    k = X.shape[1]
+    ranks = k + 1 - rankdata(X, axis=1)
+    stat = (12 / N*k*(k+1)) * np.sum(np.sum(ranks, axis=0)**2) - 3*N*(k+1)
+    chi = chi2.ppf(1 - alpha, k-1)
+    return np.mean(ranks, axis=0), stat >= chi
     
 #############################################################################
 
@@ -250,6 +257,7 @@ res_acc = np.mean(results[:,:,:,:,0], axis=3)
 print(res_acc.shape) # 7, 4, 4
 res_acc = res_acc.reshape(7, -1) # 7, (deltas x frameworks)
 
+print(friedman_test(res_acc))
 
 ranks = []
 for row in res_acc:
@@ -259,7 +267,7 @@ ranks = np.array(ranks)
 av_ranks = np.mean(ranks, axis=0)
 cd = compute_CD(av_ranks, res_acc.shape[0])
 
-fig = graph_ranks(av_ranks, labels, cd=cd, width=6, textspace=1.1, title='Balanced Accuracy', color=plt.cm.coolwarm(.9))
+fig = graph_ranks(av_ranks, labels, cd=cd, width=6, textspace=1.1, title='Balanced Accuracy ($BAC$)', color=plt.cm.coolwarm(.9))
 # plt.subplots_adjust(top=0.8)
 plt.tight_layout()
 
@@ -276,6 +284,9 @@ res_req = np.sum(res_req, axis=-1)/n_chunks
 print(res_req.shape) # 7, 4, 4
 res_req = res_req.reshape(7, -1) # 7, (deltas x frameworks)
 
+print(friedman_test(res_req))
+
+
 ranks = []
 for row in res_req:
     ranks.append(rankdata(row).tolist())
@@ -284,14 +295,13 @@ ranks = np.array(ranks)
 av_ranks = np.mean(ranks, axis=0)
 cd = compute_CD(av_ranks, res_acc.shape[0])
 
-fig = graph_ranks(av_ranks, labels, cd=cd, width=6, textspace=1.1, reverse=True, title='Label Request chunks', color=plt.cm.coolwarm(.9))
+fig = graph_ranks(av_ranks, labels, cd=cd, width=6, textspace=1.1, reverse=True, title='Label Request ($LReq$)', color=plt.cm.coolwarm(.9))
 # plt.subplots_adjust(top=0.8)
 plt.tight_layout()
 
 plt.savefig("foo.png", dpi=300)
 plt.savefig("fig_frameworks/CD_req.png")
 plt.savefig("fig_frameworks/CD_req.pdf")
-
 
 
 # CLF trainign
@@ -302,6 +312,8 @@ res_trn = np.sum(res_trn, axis=-1)/n_chunks
 print(res_trn.shape) # 7, 4, 4
 res_trn = res_trn.reshape(7, -1) # 7, (deltas x frameworks)
 
+print(friedman_test(res_trn))
+
 ranks = []
 for row in res_trn:
     ranks.append(rankdata(row).tolist())
@@ -310,7 +322,7 @@ ranks = np.array(ranks)
 av_ranks = np.mean(ranks, axis=0)
 cd = compute_CD(av_ranks, res_acc.shape[0])
 
-fig = graph_ranks(av_ranks, labels, cd=cd, width=6, textspace=1.1, reverse=True, title='Classifier Training chunks', color=plt.cm.coolwarm(.9))
+fig = graph_ranks(av_ranks, labels, cd=cd, width=6, textspace=1.1, reverse=True, title='Classifier Training Request ($TReq$)', color=plt.cm.coolwarm(.9))
 # plt.subplots_adjust(top=0.8)
 plt.tight_layout()
 
