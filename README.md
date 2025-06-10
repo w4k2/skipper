@@ -3,10 +3,10 @@
 ## Contents:
 
 ### *detectors* -- implementation of drift detectors
-### *fig_frameworks* -- plots of recognition quality, label request moments and drift detection moments
+### *fig_frameworks* -- figures presenting results of experiments
 ### *frameworks* -- implementation of frameworks
-### *results* -- results of experiment
-### *tables* -- plots of tables & tables
+### *results* -- results of experiments
+### *tables* -- plots of tables and tables
 
 #
 ### *experiment.py* -- experiment

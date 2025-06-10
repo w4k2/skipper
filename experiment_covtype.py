@@ -1,4 +1,3 @@
-from matplotlib import pyplot as plt
 import numpy as np
 from sklearn import clone
 from sklearn.datasets import fetch_covtype

@@ -3,7 +3,6 @@ from scipy.stats import rankdata
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-from scipy.stats import friedmanchisquare
 from scipy.stats import chi2
 
 def compute_CD(avranks, n):
@@ -268,7 +267,6 @@ av_ranks = np.mean(ranks, axis=0)
 cd = compute_CD(av_ranks, res_acc.shape[0])
 
 fig = graph_ranks(av_ranks, labels, cd=cd, width=6, textspace=1.1, title='Balanced Accuracy ($BAC$)', color=plt.cm.coolwarm(.9))
-# plt.subplots_adjust(top=0.8)
 plt.tight_layout()
 
 plt.savefig("foo.png", dpi=300)
@@ -296,7 +294,6 @@ av_ranks = np.mean(ranks, axis=0)
 cd = compute_CD(av_ranks, res_acc.shape[0])
 
 fig = graph_ranks(av_ranks, labels, cd=cd, width=6, textspace=1.1, reverse=True, title='Label Request ($LReq$)', color=plt.cm.coolwarm(.9))
-# plt.subplots_adjust(top=0.8)
 plt.tight_layout()
 
 plt.savefig("foo.png", dpi=300)
@@ -323,7 +320,6 @@ av_ranks = np.mean(ranks, axis=0)
 cd = compute_CD(av_ranks, res_acc.shape[0])
 
 fig = graph_ranks(av_ranks, labels, cd=cd, width=6, textspace=1.1, reverse=True, title='Classifier Training Request ($TReq$)', color=plt.cm.coolwarm(.9))
-# plt.subplots_adjust(top=0.8)
 plt.tight_layout()
 
 plt.savefig("foo.png", dpi=300)
