@@ -2,6 +2,7 @@
 from scipy.stats import rankdata, ranksums, wilcoxon
 import numpy as np
 import matplotlib.pyplot as plt
+from tabulate import tabulate
     
 
 deltas = [1, 10, 20, 60]
@@ -31,35 +32,30 @@ for i in range(len(labels)):
             stat[i,j], p_val[i,j] = wilcoxon(res_acc[:,i], res_acc[:,j])
             better[i,j] = np.mean(res_acc[:,i]) > np.mean(res_acc[:,j])
 
-# print(p_val)
-# exit()
 significant = p_val<0.05
 significantly_better = significant*better
 
-print(significantly_better)
+# print(significantly_better)
+# for ds_id in range(7):
+    
+#     c = ['C%i' % ds_id]
+#     c.extend(np.round(res_acc[ds_id], 3))
+#     c2 = ['C%i' % ds_id]
+#     for i in range(7):
+#         better = np.argwhere(significantly_better[i])
+#         print(better)
+#     print(c)
+#     exit()
 
-exit()
+# plt.imshow(res_acc, cmap='coolwarm')
+# plt.savefig('foo.png')
 
-# CLF trainign
-res_trn = results[...,2]==0
-n_chunks = res_trn.shape[-1]
+datasets = ['C%i' %i for i in range(7)]
+data1 = np.round(res_acc,3).astype(object)[:,:8]
+data2 = np.round(res_acc,3).astype(object)[:,8:]
 
-res_trn = np.sum(res_trn, axis=-1)/n_chunks
-print(res_trn.shape) # 7, 4, 4
-res_trn = res_trn.reshape(7, -1) # 7, (deltas x frameworks)
+data1= np.column_stack((datasets, data1))
+data2= np.column_stack((datasets, data2))
 
-ranks = []
-for row in res_trn:
-    ranks.append(rankdata(row).tolist())
-ranks = np.array(ranks)
-
-av_ranks = np.mean(ranks, axis=0)
-cd = compute_CD(av_ranks, res_acc.shape[0])
-
-fig = graph_ranks(av_ranks, labels, cd=cd, width=6, textspace=1.1, reverse=True, title='Classifier Training chunks', color=plt.cm.coolwarm(.9))
-# plt.subplots_adjust(top=0.8)
-plt.tight_layout()
-
-plt.savefig("foo.png", dpi=300)
-plt.savefig("fig_frameworks/CD_trn.png")
-plt.savefig("fig_frameworks/CD_trn.pdf")
+print(tabulate(data1, headers=labels[:8], tablefmt='latex'))
+print(tabulate(data2, headers=labels[8:], tablefmt='latex'))
