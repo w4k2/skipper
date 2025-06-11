@@ -7,8 +7,7 @@ def get_real_drift(n_ch, n_d):
     return real_drifts
 
 
-delta = 100
-d = 5
+d = 100
 n_chunks = 5000
 
 frameworks = ['Continuous Rebuild (CR)',
@@ -19,7 +18,7 @@ frameworks = ['Continuous Rebuild (CR)',
 results = np.load('results/results_volume.npy')
 # frameworks, chunks, (bac, detections, trainings)
 
-fig, ax = plt.subplots(4, 1, figsize=(6,8), sharex=True, sharey=True)
+fig, ax = plt.subplots(4, 1, figsize=(10,10), sharex=True, sharey=True)
 plt.suptitle('MLP | Oracle | 5 concept drifts')
     
             
