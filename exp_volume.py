@@ -51,6 +51,7 @@ for f_id, f in enumerate(frameworks):
         n_drifts=drifts,
         n_features=n_features,
         n_redundant=0,
+        random_state=3456,
         n_informative=int(0.3*n_features))
                   
 
