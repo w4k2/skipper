@@ -88,5 +88,5 @@ ax.legend(handles=handles, frameon=False, loc=4)
 
 plt.tight_layout()
 plt.savefig('foo.png')
-plt.savefig('preliminary/pre_acc.png')
-plt.savefig('preliminary/pre_acc.pdf')
+plt.savefig('preliminary/pre_acc.png', dpi=500)
+plt.savefig('preliminary/pre_acc.eps')

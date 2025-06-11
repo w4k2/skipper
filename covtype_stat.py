@@ -271,7 +271,7 @@ plt.tight_layout()
 
 plt.savefig("foo.png", dpi=300)
 plt.savefig("fig_frameworks/CD_acc.png")
-plt.savefig("fig_frameworks/CD_acc.pdf")
+plt.savefig("fig_frameworks/CD_acc.eps")
 
 
 # Label request
@@ -298,7 +298,7 @@ plt.tight_layout()
 
 plt.savefig("foo.png", dpi=300)
 plt.savefig("fig_frameworks/CD_req.png")
-plt.savefig("fig_frameworks/CD_req.pdf")
+plt.savefig("fig_frameworks/CD_req.eps")
 
 
 # CLF trainign
@@ -324,5 +324,5 @@ plt.tight_layout()
 
 plt.savefig("foo.png", dpi=300)
 plt.savefig("fig_frameworks/CD_trn.png")
-plt.savefig("fig_frameworks/CD_trn.pdf")
+plt.savefig("fig_frameworks/CD_trn.eps")
 
